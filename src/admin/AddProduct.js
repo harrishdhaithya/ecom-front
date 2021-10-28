@@ -151,7 +151,7 @@ const AddProduct = () => {
       );
 
 
-    
+    console.log(success);
     return (
         <Base 
          title="Add Some Cool Products Here 😍😍😍"
@@ -161,7 +161,7 @@ const AddProduct = () => {
             <Link to="/admin/dashboard" className="btn btn-md btn-danger mb-2">To Admin Home</Link>
             <div className="row bg-dark text-white rounded pb-3 pt-3">
                 <div className="col-md-8 offset-md-2">
-                    {successMessage()}
+                    {success&&successMessage()}
                     {createProductForm()}
                 </div>
             </div>

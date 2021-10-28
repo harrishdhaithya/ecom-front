@@ -16,7 +16,7 @@ import Updateproduct from './admin/UpdateProduct';
 const Routes = () => {
     return (
         <BrowserRouter>
-            <switch>
+            <Switch>
                 <Route path ="/" exact component={Home}/>
                 <Route path ="/signup" exact component={Signup}/>
                 <Route path ="/signin" exact component={Signin}/>
@@ -28,7 +28,7 @@ const Routes = () => {
                 <AdminRoute path="/admin/products" exact component={ManageProducts}/>
                 <AdminRoute path="/admin/product/update/:productId" exact component={Updateproduct}/>
                 
-            </switch>
+            </Switch>
         </BrowserRouter>
     );
 }
