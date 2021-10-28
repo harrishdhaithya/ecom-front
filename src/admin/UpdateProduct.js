@@ -5,7 +5,7 @@ import { createProduct, getCategories, getProduct, updateProduct } from './helpe
 import { isAuthenticated } from '../auth/helper';
 
 
-const UpdateProduct = () => {
+const UpdateProduct = ({match}) => {
 
     const {user,token} = isAuthenticated();
     const [values, setValues] = useState({
@@ -21,9 +21,19 @@ const UpdateProduct = () => {
         createProduct:"",
         getRedirect:false,
         success:false,
-        formData:new FormData()
-
-    });
+        formData:new FormData(),
+       });
+    const preloadCategory = ()=>{
+      getCategories().then(data=>{
+        if(data.error){
+          setValues({...values,error:data.error});
+        }else{
+          setValues({
+            categories:data, formData: new FormData()
+          })
+        }
+      })
+    }
     const {name,description,price,stock,categories,category,loading,error,formData,success}=values;
     
     const preload = (productId) =>{
@@ -32,30 +42,33 @@ const UpdateProduct = () => {
         if(data.error){
           setValues({...values,error:data.error});
         }else{
+          preloadCategory();
           setValues({
               ...values,
               name:data.name,
               description:data.description,
               price:data.price,
+              stock:data.stock,
               category:data.category,
               formData:new FormData()
             });
-          console.log(categories);
         }
       })
     }
     useEffect(() => {
-      preload()
+      preload(match.params.productId)
+      
     }, []);
 
-    //work on it
+
     const onSubmit = (event)=>{
       setValues({...values,error:"",loading:true});
-      updateProduct(user._id,token,formData)
+      updateProduct(match.params.productId,user._id,token,formData)
       .then(data=>{
         if(data.error){
           setValues({...values,error:data.error})
         }else{
+          alert(data.name);
           setValues(
             {
             ...values,
@@ -170,7 +183,7 @@ const UpdateProduct = () => {
             <Link to="/admin/dashboard" className="btn btn-md btn-danger mb-2">To Admin Home</Link>
             <div className="row bg-dark text-white rounded pb-3 pt-3">
                 <div className="col-md-8 offset-md-2">
-                    {successMessage()}
+                    {/* {successMessage()} */}
                     {createProductForm()}
                 </div>
             </div>
